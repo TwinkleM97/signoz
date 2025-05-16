@@ -1,0 +1,10 @@
+- name: remove signoz
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: docker compose down
+      community.docker.docker_compose_v2:
+        project_src: clickhouse-setup
+        files:
+        - docker-compose-minimal.yaml
+        state: absent
