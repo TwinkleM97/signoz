@@ -1,5 +1,5 @@
 
-# Branch: fix-docker-stats-receiver-crash
+# Branch: fix-docker-stats-receiver
 
 ## Hypothesis
 
