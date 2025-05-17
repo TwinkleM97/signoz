@@ -1,4 +1,4 @@
-# Branch: fix-hostmetrics-process-filter
+# Branch: fix-stable-otel-collector
 
 ## Hypothesis
 
