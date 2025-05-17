@@ -44,29 +44,33 @@ This confirmed that the SigNoz collector image did not support the `docker_stats
 To resolve the issue:
 
 1. I removed the 'docker_stats' block from the'receivers' section of 'otel-collector-config.yaml'.
-2. I removed 'docker_stats' from the'metrics' pipeline in'service.pipelines'.
+2. I removed 'docker_stats' from the 'metrics' pipeline in 'service.pipelines'.
 3. Rebuilt and restarted the Docker stack with the following command to ensure that all services were reset to the revised configuration.
 
-```md
 **MANDATORY: Run this to apply the fixed config**
 
 ```bash
 docker compose -f clickhouse-setup/docker-compose-minimal.yaml up -d --force-recreate
+```
 
 This command forcefully recreated all containers, ensuring no broken state persisted from the previous configuration.
 
+---
+
 ## Test Result
 
-After removing the unsupported `docker_stats` configuration and force-restarting the stack, the application started successfully. The UI was accessible and containers are up and running.
+After removing the unsupported `docker_stats` configuration and force-restarting the stack, the application started successfully. The UI was accessible and containers were up and running.
 
-Logs showed no errors from the collector, and SigNoz operated normally with system metrics and dashboards functional.
+Logs showed no errors from the collector, and SigNoz operated normally with system metrics and dashboards functioning properly.
 
-## Conclusion
+---
 
-The test confirms that the SigNoz custom collector image does not include the `docker_stats` receiver by default. Including it in the configuration results in the entire application failing to start.
+## ✅ Conclusion
 
-To collect Docker container metrics, one would need to:
-- Build a custom OpenTelemetry Collector from the `otel-collector-contrib` repo including the `docker_stats` receiver, or
-- Use an external metrics solution (e.g. cAdvisor + Prometheus) to push container metrics to SigNoz.
+The test confirms that the SigNoz custom collector image does **not** include the `docker_stats` receiver by default. Including it in the configuration causes the application to fail during startup.
+
+### 🔧 To collect Docker container metrics, you can:
+- Build a custom OpenTelemetry Collector from the [`otel-collector-contrib`](https://github.com/open-telemetry/opentelemetry-collector-contrib) repo including the `docker_stats` receiver, **or**
+- Use an external metrics solution (e.g [`cAdvisor`](https://github.com/google/cadvisor) + [`Prometheus`](https://prometheus.io)) to push Docker container metrics into SigNoz.
 
 For now, removing the unsupported block allowed the platform to start correctly and verified the cause of failure.
