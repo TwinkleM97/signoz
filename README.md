@@ -65,11 +65,11 @@ Logs showed no errors from the collector, and SigNoz operated normally with syst
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 The test confirms that the SigNoz custom collector image does **not** include the `docker_stats` receiver by default. Including it in the configuration causes the application to fail during startup.
 
-### 🔧 To collect Docker container metrics, you can:
+### To collect Docker container metrics, you can:
 - Build a custom OpenTelemetry Collector from the [`otel-collector-contrib`](https://github.com/open-telemetry/opentelemetry-collector-contrib) repo including the `docker_stats` receiver, **or**
 - Use an external metrics solution (e.g [`cAdvisor`](https://github.com/google/cadvisor) + [`Prometheus`](https://prometheus.io)) to push Docker container metrics into SigNoz.
 
