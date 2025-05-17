@@ -74,8 +74,6 @@ After restart:
 - OS type showed as `linux`
 - Host-level metrics including CPU, Memory, and Load Avg were populated.
 
-![hostmetrics](./hostmetrics-populated.png)
-
 In the APM section, services such as `driver`, `frontend`, `customer`, and `redis` were also visible with latency and throughput values, confirming that metrics and traces were correctly ingested.
 
 ## Conclusion
@@ -84,4 +82,4 @@ The crash or empty display in the Hosts dashboard was caused by an invalid key u
 
 Going forward:
 - Always validate scraper configuration keys against the [OpenTelemetry Collector manual].(https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver)
-- Be note that the SigNoz collector image is tagged'signoz-otel-collector', so use that name in logs, debugging, and documentation.
+- Note that the SigNoz collector image is tagged'signoz-otel-collector', so use that name in logs, debugging, and documentation.
