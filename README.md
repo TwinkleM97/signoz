@@ -47,8 +47,9 @@ To resolve the issue:
 2. I removed 'docker_stats' from the'metrics' pipeline in'service.pipelines'.
 3. Rebuilt and restarted the Docker stack with the following command to ensure that all services were reset to the revised configuration.
 
-```markdown
- **MANDATORY: Run this to apply the fixed config**
+```md
+**MANDATORY: Run this to apply the fixed config**
+
 ```bash
 docker compose -f clickhouse-setup/docker-compose-minimal.yaml up -d --force-recreate
 
