@@ -42,6 +42,13 @@ x-db-depend: &db-depend
     #   condition: service_healthy
 
 services:
+  logspout :
+    container_name: logspout
+    image: gliderlabs/logspout:v3.2.14
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: tcp://otel-collector:2255
 
   zookeeper-1:
     image: bitnami/zookeeper:3.7.1
@@ -228,7 +235,7 @@ services:
 
   otel-collector:
     image: signoz/signoz-otel-collector:${OTELCOL_TAG:-0.102.12}
-    container_name: signoz-otel-collector
+    container_name: otel-collector
     command:
       [
         "--config=/etc/otel-collector-config.yaml",
@@ -239,6 +246,7 @@ services:
     user: root # required for reading docker container logs
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket mount
       - ./otel-collector-opamp-config.yaml:/etc/manager-config.yaml
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /:/hostfs:ro
@@ -250,6 +258,7 @@ services:
       # - "1777:1777"     # pprof extension
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP HTTP receiver
+      - "2255:2255" 
       # - "8888:8888"     # OtelCollector internal metrics
       # - "8889:8889"     # signoz spanmetrics exposed by the agent
       # - "9411:9411"     # Zipkin port
@@ -267,13 +276,3 @@ services:
       query-service:
         condition: service_healthy
 
-  logspout:
-    image: "gliderlabs/logspout:v3.2.14"
-    container_name: signoz-logspout
-    volumes:
-      - /etc/hostname:/etc/host_hostname:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: syslog+tcp://otel-collector:2255
-    depends_on:
-      - otel-collector
-    restart: on-failure
